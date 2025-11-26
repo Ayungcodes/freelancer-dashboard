@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+body {
+  font-family: 'Inter';
+}
+
 .light {
   background-color: #f0f0f0;
   color: #333333;
@@ -7,5 +11,5 @@
 
 .dark {
   background-color: #000;
-  color: #f0f0f0;
+  color: #e1dcdc;
 }
