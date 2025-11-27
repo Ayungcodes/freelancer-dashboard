@@ -20,7 +20,7 @@ const DateAndTime = () => {
 
   return (
     <div className="flex flex-col">
-      <span className="text-sm opacity-85">{formattedDate}</span>
+      <span className="text-sm md:text-[16px] opacity-85">{formattedDate}</span>
       {/* <span className="text-lg font-medium">{formattedTime}</span> */}
     </div>
   );

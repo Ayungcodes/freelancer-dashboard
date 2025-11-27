@@ -1,0 +1,44 @@
+import {
+  LineChart,
+  Line,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
+
+const Monthdata = [
+  { month: "Jun", revenue: 900 },
+  { month: "Jul", revenue: 750 },
+  { month: "Aug", revenue: 1350 },
+  { month: "Sep", revenue: 1480 },
+  { month: "Oct", revenue: 2100 },
+  { month: "Nov", revenue: 800 },
+];
+
+const RevenueChart = ({darkMode}) => {
+  return (
+    <div className={`w-full h-[256px] ${darkMode ? "bg-stone-900" : "bg-gray-900"}`}>
+      <ResponsiveContainer width="100%" height="100%">
+        <LineChart data={Monthdata}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="month" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Line
+            type="monotone"
+            dataKey="revenue"
+            name="Revenue (Last 6 Months)"
+            stroke="#16A34A"
+            strokeWidth={3}
+          />
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
+  );
+};
+
+export default RevenueChart;
