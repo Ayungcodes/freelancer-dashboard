@@ -1,19 +1,18 @@
+import { Routes, Route } from "react-router";
+import Clients from "./sections/Clients";
 import Dashboard from "./sections/Dashboard";
-import Navbar from "./sections/Navbar";
 import { useState, useEffect } from "react";
+import Tasks from "./sections/Tasks";
+import Analytics from "./sections/Analytics";
+import Settings from "./sections/Settings";
 
 const App = () => {
   const [darkMode, setDarkMode] = useState(
     localStorage.getItem("theme") === "dark"
   );
-  const [dashboard, setDashboard] = useState(true);
 
-   const toggleDashboard = () => {
-    setDashboard((prev) => !prev);
-  };
-
-  let name = "Gaius"
-  let userMail = "gaiusemmanuel12@gmail.com"
+  let name = "Gaius";
+  let userMail = "gaiusemmanuel12@gmail.com";
 
   useEffect(() => {
     if (darkMode) {
@@ -28,10 +27,61 @@ const App = () => {
   }, [darkMode]);
 
   return (
-    <main>
-      <Navbar darkMode={darkMode} setDarkMode={setDarkMode} name={name} userMail={userMail} dashboard={dashboard} toggleDashboard={toggleDashboard} />
-      <Dashboard name={name} darkMode={darkMode} dashboard={dashboard} />
-    </main>
+    <>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <Dashboard
+                name={name}
+                darkMode={darkMode}
+                userMail={userMail}
+                setDarkMode={setDarkMode}
+              />
+            }
+          />
+          <Route
+            path="/clients"
+            element={
+              <Clients
+                darkMode={darkMode}
+                userMail={userMail}
+                setDarkMode={setDarkMode}
+              />
+            }
+          />
+          <Route
+            path="/tasks"
+            element={
+              <Tasks
+                darkMode={darkMode}
+                userMail={userMail}
+                setDarkMode={setDarkMode}
+              />
+            }
+          />
+          <Route
+            path="/analytics"
+            element={
+              <Analytics
+                darkMode={darkMode}
+                userMail={userMail}
+                setDarkMode={setDarkMode}
+              />
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <Settings
+                darkMode={darkMode}
+                userMail={userMail}
+                setDarkMode={setDarkMode}
+              />
+            }
+          />
+        </Routes>
+    </>
   );
 };
 

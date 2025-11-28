@@ -20,13 +20,13 @@ const data = [
 
 const PerformanceChart = ({darkMode}) => {
   return (
-    <div className={`"w-[full] h-[350px] p-4 rounded-2xl shadow-md ${darkMode ? "bg-stone-900" : "bg-gray-900"}`}>
+    <div className={`"w-[full] h-[350px] p-4 rounded-2xl shadow-md ${darkMode ? "bg-stone-900" : "bg-white"}`}>
       {/* <h2 className="text-lg font-semibold mb-4 dark:text-white">
         Performance Overview
       </h2> */}
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={data} margin={{ top: 10, right: 30, bottom: -5, left: -15 }}>
-          <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
+          <CartesianGrid strokeDasharray="3 3"/>
           <XAxis dataKey="month" />
           <YAxis />
           <Tooltip />
