@@ -14,7 +14,7 @@ const tasks = [
   {
     id: 2,
     title: "Social Media Schedule",
-    client: "Mr. Steven",
+    client: "Mr. Felix Ewe",
     status: "In Progress",
     priority: "Medium",
     updatedAt: "2025-11-27T12:00:00",

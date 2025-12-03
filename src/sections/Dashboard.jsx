@@ -17,7 +17,7 @@ const Dashboard = ({ name, darkMode, userMail, setDarkMode }) => {
             <h1 className="text-xl md:text-2xl font-semibold">Welcome back, {name}👋🏾</h1>
           </div>
           {/* cards */}
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-3 gap-3 mt-14">
             <Card title="Total Clients" value={54} darkMode={darkMode} />
             <Card title="Active Clients" value={7} darkMode={darkMode} />
             <Card title="Inactive Clients" value={47} darkMode={darkMode} />
