@@ -2,49 +2,24 @@ import Navbar from "./Navbar";
 import Card from "../components/Card";
 import { useState } from "react";
 
-const Tasks = ({ darkMode, userMail, setDarkMode }) => {
+const Tasks = ({
+  darkMode,
+  userMail,
+  setDarkMode,
+  tasks,
+  totalTasks,
+  activeTasks,
+  completedTasks,
+  overdueTasks,
+}) => {
   const [searchTerm, setSearchTerm] = useState("");
-
-  const tasks = [
-    { id: 1, title: "Landing page", client: "Mr. Dalung", status: "Completed" },
-    {
-      id: 2,
-      title: "Backend API setup",
-      client: "Mr. Thaddeus",
-      status: "In Progress",
-    },
-    {
-      id: 3,
-      title: "Design homepage",
-      client: "Miss. Olabamidele",
-      status: "Pending",
-    },
-    {
-      id: 4,
-      title: "Create wireframe",
-      client: "Mr. Bako",
-      status: "Pending",
-    },
-    {
-      id: 5,
-      title: "Send proposal",
-      client: "Blast Media",
-      status: "Pending",
-    },
-    {
-      id: 6,
-      title: "Design aboutpage",
-      client: "Mrs. Chukwuebuka",
-      status: "Pending",
-    }
-  ];
 
   const filteredTasks = tasks.filter((task) =>
     task.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
-    <section className="px-2 flex flex-col items-center overflow-x-hidden">
+    <section className="px-2 md:px-8 lg:px-20 flex flex-col items-center overflow-x-hidden w-screen pb-10">
       {/* navbar */}
       <div>
         <Navbar
@@ -54,25 +29,33 @@ const Tasks = ({ darkMode, userMail, setDarkMode }) => {
         />
       </div>
       {/* cards */}
-      <div className="grid grid-cols-3 gap-3 mt-8">
-        <Card title="Total Tasks" value={27} darkMode={darkMode} />
-        <Card title="Active Tasks" value={10} darkMode={darkMode} />
-        <Card title="Completed Tasks" value={12} darkMode={darkMode} />
-        <Card title="Overdue Tasks" value={5} darkMode={darkMode} />
+      <div className="grid grid-cols-3 gap-3 mt-10 w-full">
+        <Card title="Total Tasks" value={totalTasks} darkMode={darkMode} />
+        <Card title="Active Tasks" value={activeTasks} darkMode={darkMode} />
+        <Card
+          title="Completed Tasks"
+          value={completedTasks}
+          darkMode={darkMode}
+        />
+        <Card title="Overdue Tasks" value={overdueTasks} darkMode={darkMode} />
       </div>
       {/* search and add tasks */}
-      <div className="flex justify-between w-full items-center mt-8">
-        <input
-          type="search"
-          name="search tasks"
-          id="search"
-          placeholder="Search tasks..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="border w-[60vw] border-stone-600 py-1 px-3 rounded-md"
-        />
+      <div className="flex justify-between gap-3 mt-8 w-full">
+        <div className="lg:w-[83%] md:w-[70vw] w-[62vw] flex items-center gap-2 border border-stone-500 rounded-lg px-3 py-1">
+          <i className="fa-solid fa-magnifying-glass text-stone-500"></i>
+
+          <input
+            type="search"
+            name="search tasks"
+            id="search"
+            placeholder="Search tasks..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="flex-1 outline-none bg-transparent text-sm"
+          />
+        </div>
         <button
-          className={`py-1 px-3 rounded-md ${
+          className={`lg:w-[13vw] md:w-[30vw] w-[38vw] py-1.5 rounded-md ${
             darkMode
               ? "bg-gray-50 text-[#333333] hover:bg-gray-200"
               : "bg-[#000] text-gray-50"
@@ -84,28 +67,32 @@ const Tasks = ({ darkMode, userMail, setDarkMode }) => {
 
       {/* search area */}
       <div
-        className={`shadow-sm w-full mt-8 rounded-xl overflow-hidden mx-auto ${
+        className={`shadow-sm w-full mt-8 md:px-4 rounded-xl overflow-hidden mx-auto ${
           darkMode ? "bg-stone-900" : "bg-white"
         }`}
       >
         {/* Search Results */}
-        <div className="space-y-2">
+        <div>
           {filteredTasks.length === 0 && (
-            <p className="text-neutral-500 text-sm">No tasks found.</p>
+            <p className="text-neutral-500 text-sm py-2 px-3">
+              No tasks found.
+            </p>
           )}
 
           {filteredTasks.map((task) => (
             <div
               key={task.id}
-              className={`flex justify-between items-center px-4 py-3 border-b border-stone-600 last:border-b-0 ${
-                darkMode ? "hover:bg-stone-800" : "hover:bg-gray-50"
+              className={`flex justify-between items-center py-3 md:py-5 border-b last:border-b-0 ${
+                darkMode
+                  ? "hover:bg-stone-800 border-stone-700"
+                  : "hover:bg-gray-50 border-gray-400"
               } transition`}
             >
-              <div>
+              <div className="px-2">
                 <p className="font-medium">{task.title}</p>
-                <p className="text-sm text-gray-500">{task.client}</p>
+                <p className="text-sm text-gray-400/90">{task.client}</p>
               </div>
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-4 px-2">
                 <span
                   className={`px-2 py-1 text-xs rounded-full ${
                     task.status === "Completed"
@@ -120,13 +107,6 @@ const Tasks = ({ darkMode, userMail, setDarkMode }) => {
           ))}
         </div>
       </div>
-
-      {/* tasks */}
-      <div
-        className={`shadow-sm w-full mt-8 rounded-xl overflow-hidden mx-auto ${
-          darkMode ? "bg-stone-900" : "bg-white"
-        }`}
-      ></div>
     </section>
   );
 };

@@ -1,5 +1,4 @@
 // eslint-disable-next-line no-unused-vars
-import { motion } from "framer-motion";
 import Navbar from "./Navbar";
 
 const Settings = ({ darkMode, userMail, setDarkMode }) => {
@@ -10,14 +9,7 @@ const Settings = ({ darkMode, userMail, setDarkMode }) => {
         userMail={userMail}
         setDarkMode={setDarkMode}
       />
-      <motion.div
-        initial={{ x: "100%", opacity: 0 }}
-        animate={{ x: "0%", opacity: 1 }}
-        exit={{ x: "-100%", opacity: 0 }}
-        transition={{ duration: 0.5, ease: "easeInOut" }}
-      >
-        <div className="px-2">Hello Settings!</div>
-      </motion.div>
+      <div className="px-2">In build...</div>
     </section>
   );
 };

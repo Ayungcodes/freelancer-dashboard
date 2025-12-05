@@ -1,46 +1,6 @@
 import { useState } from "react";
 
-const initialClients = [
-  { id: 1, name: "Felix Dalung", email: "felix@example.com", status: "Active" },
-  {
-    id: 2,
-    name: "William Ogbonna",
-    email: "william@example.com",
-    status: "Inactive",
-  },
-  {
-    id: 3,
-    name: "Moses Thaddeus",
-    email: "moses@yahoomail.com",
-    status: "Active",
-  },
-  {
-    id: 4,
-    name: "Chinaza Chukwuebuka",
-    email: "moses@yahoomail.com",
-    status: "Active",
-  },
-  {
-    id: 5,
-    name: "Fadike Olabamidele",
-    email: "moses@yahoomail.com",
-    status: "Active",
-  },
-  {
-    id: 6,
-    name: "Badaru Bako",
-    email: "moses@yahoomail.com",
-    status: "Active",
-  },
-  {
-    id: 7,
-    name: "Blast Media",
-    email: "blast@yahoomail.com",
-    status: "Prospect",
-  },
-];
-
-const ClientsList = ({ darkMode }) => {
+const ClientsList = ({ darkMode, initialClients }) => {
   const [clients, setClients] = useState(initialClients);
   const [addClientArea, setAddClientArea] = useState(false);
   const [name, setName] = useState("");
@@ -59,7 +19,7 @@ const ClientsList = ({ darkMode }) => {
       email: email,
       status: "Active",
     };
-    setClients([newClient, ...clients]);
+    setClients([...clients, newClient]);
     setName("");
     setEmail("");
   };
@@ -69,12 +29,23 @@ const ClientsList = ({ darkMode }) => {
   };
 
   return (
-    <div className="">
-      <div className="flex justify-between">
-        <h1 className="text-xl font-semibold">Clients</h1>
+    <div>
+      <div className="flex justify-between gap-3">
+        <div className="lg:w-[83%] md:w-[70vw] w-[59vw] flex items-center gap-2 border border-stone-500 rounded-lg px-3 py-1.5">
+          <i className="fa-solid fa-magnifying-glass text-stone-500"></i>
+
+          <input
+            type="search"
+            placeholder="Search clients..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="flex-1 outline-none bg-transparent text-sm"
+          />
+        </div>
+
         <button
           onClick={handleOpenAddClient}
-          className={`py-1 px-3 rounded-md ${
+          className={`lg:w-[13vw] md:w-[20vw] w-[39vw] py-1 rounded-md ${
             darkMode
               ? "bg-gray-50 text-[#333333] hover:bg-gray-200"
               : "bg-[#000] text-gray-50"
@@ -82,8 +53,9 @@ const ClientsList = ({ darkMode }) => {
         >
           + Add Client
         </button>
+        {/* add client pop up */}
         <div
-          className={`fixed w-screen bottom-0 left-0 w-full ${
+          className={`fixed w-screen bottom-0 left-0 ${
             darkMode ? "bg-stone-800/95" : "bg-white/95"
           } backdrop-blur-sm z-50 overflow-hidden transition-all duration-500 ease-in-out ${
             addClientArea
@@ -140,25 +112,6 @@ const ClientsList = ({ darkMode }) => {
         </div>
       </div>
 
-      {/* Search / Filter */}
-
-      <div className="flex justify-center gap-4 mb-4 mt-4">
-        <input
-          type="search"
-          placeholder="Search clients..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="border border-stone-500 px-3 py-1 rounded-lg flex-1"
-        />
-        <select className="border border-stone-500 px-3 py-1 rounded-lg text-[15px]">
-          <option value="" className="text-[15px]">
-            All Status
-          </option>
-          <option value="Active">Active</option>
-          <option value="Inactive">Inactive</option>
-        </select>
-      </div>
-
       {/* Client table */}
       <div
         className={`shadow-sm w-full mt-8 rounded-xl overflow-hidden mx-auto ${
@@ -166,21 +119,25 @@ const ClientsList = ({ darkMode }) => {
         }`}
       >
         {/* Search Results */}
-        <div className="space-y-2">
+        <div className="">
           {filteredClients.length === 0 && (
-            <p className="text-neutral-500 text-sm">No tasks found.</p>
+            <p className="text-neutral-500 text-sm md:text-[17px] py-2 px-3">
+              No clients found.
+            </p>
           )}
 
           {filteredClients.map((client) => (
             <div
               key={client.id}
-              className={`flex justify-between items-center px-4 py-3 border-b border-stone-600 last:border-b-0 ${
-                darkMode ? "hover:bg-stone-800" : "hover:bg-gray-50"
+              className={`flex justify-between items-center px-4 py-3 md:py-5 border-b last:border-b-0 ${
+                darkMode
+                  ? "hover:bg-stone-800 border-stone-700"
+                  : "hover:bg-gray-50 border-gray-400"
               } transition`}
             >
               <div>
                 <p className="font-medium">{client.name}</p>
-                <p className="text-sm text-gray-500">{client.email}</p>
+                <p className="text-sm text-gray-400/90">{client.email}</p>
               </div>
               <div className="flex items-center gap-4">
                 <span
@@ -192,7 +149,7 @@ const ClientsList = ({ darkMode }) => {
                 >
                   {client.status}
                 </span>
-                <button className="text-blue-700 hover:underline text-sm">
+                <button className="text-blue-600 hover:underline text-sm">
                   Edit
                 </button>
                 <button className="text-red-600 hover:underline text-sm">

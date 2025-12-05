@@ -25,7 +25,7 @@ const PerformanceChart = ({darkMode}) => {
         Performance Overview
       </h2> */}
       <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={data} margin={{ top: 10, right: 30, bottom: -5, left: -15 }}>
+        <LineChart data={data} margin={{ top: 10, right: 10, bottom: -5, left: -30 }}>
           <CartesianGrid strokeDasharray="3 3"/>
           <XAxis dataKey="month" />
           <YAxis />

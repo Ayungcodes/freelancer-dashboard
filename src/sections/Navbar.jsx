@@ -5,13 +5,15 @@ import { useState } from "react";
 
 const Navbar = ({ darkMode, setDarkMode, userMail }) => {
   const [openNav, setNavOpen] = useState(false);
+  // const [showSearch, setShowSearch] = useState(false);
+
   const toggleNav = () => {
     setNavOpen((prev) => !prev);
   };
 
   return (
-    <nav className="w-screen py-5 px-2 md:px-4 mx-auto">
-      <div className="flex flex-col gap-4 w-full">
+    <nav className="w-screen py-5 px-2 md:px-8 mx-auto">
+      <div className="flex flex-col gap-6 w-full">
         {/* top bar */}
         <div className="flex justify-between items-center">
           {/* left */}
@@ -20,9 +22,13 @@ const Navbar = ({ darkMode, setDarkMode, userMail }) => {
           </div>
           {/* right */}
           <div className="space-x-2">
-            <button className="cursor-pointer md:text-lg">
-              <i class="fa-solid fa-magnifying-glass"></i>
+            <button
+              className="cursor-pointer md:text-lg"
+              // onClick={() => setShowSearch((prev) => !prev)}
+            >
+              <i className="fa-solid fa-magnifying-glass"></i>
             </button>
+
             <button className="cursor-pointer md:text-lg">
               <i class="fa-regular fa-bell"></i>
             </button>
@@ -52,7 +58,7 @@ const Navbar = ({ darkMode, setDarkMode, userMail }) => {
           </div>
         </div>
         {/* nav items bar */}
-        <div className="flex justify-evenly items-center text-[15px] md:text-lg">
+        <div className="flex justify-evenly lg:justify-center lg:gap-9 items-center text-[15px] md:text-[18px]">
           <NavLink
             to="/"
             className={({ isActive }) =>
@@ -107,7 +113,7 @@ const Navbar = ({ darkMode, setDarkMode, userMail }) => {
       </div>
       {/* toggle nav */}
       <div
-        className={`fixed top-0 left-0 right-0 w-screen h-screen flex justify-center mt-14 ${
+        className={`fixed top-0 left-0 right-0 w-screen h-screen flex justify-center mt-14 px-2 ${
           darkMode ? "bg-[#000]" : "bg-[#f0f0f0]"
         } ${
           openNav

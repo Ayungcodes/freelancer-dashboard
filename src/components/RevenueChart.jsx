@@ -20,9 +20,9 @@ const Monthdata = [
 
 const RevenueChart = ({darkMode}) => {
   return (
-    <div className={`w-full h-[256px] ${darkMode ? "bg-stone-900" : "bg-white"} shadow-md`}>
+    <div className={`w-full h-[260px] md:h-[350px] ${darkMode ? "bg-stone-900" : "bg-white"} shadow-md`}>
       <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={Monthdata}>
+        <LineChart data={Monthdata} margin={{ top: 20, right: 20, bottom: 8, left: 2 }}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="month" />
           <YAxis />

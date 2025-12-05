@@ -1,7 +1,7 @@
 import ClientsList from "../components/ClientsList";
 import Navbar from "./Navbar";
 
-const Clients = ({ darkMode, userMail, setDarkMode }) => {
+const Clients = ({ darkMode, userMail, setDarkMode, initialClients }) => {
   return (
     <section>
     <Navbar
@@ -9,8 +9,8 @@ const Clients = ({ darkMode, userMail, setDarkMode }) => {
           userMail={userMail}
           setDarkMode={setDarkMode}
         />
-      <div className="px-2 mt-8">
-       <ClientsList darkMode={darkMode} />
+      <div className="px-2 mt-8 md:px-8 lg:px-20">
+       <ClientsList darkMode={darkMode} initialClients={initialClients} />
       </div>
     </section>
   );
