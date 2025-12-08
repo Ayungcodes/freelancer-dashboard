@@ -15,7 +15,7 @@ const Monthdata = [
   { month: "Aug", revenue: 1350 },
   { month: "Sep", revenue: 1480 },
   { month: "Oct", revenue: 2100 },
-  { month: "Nov", revenue: 800 },
+  { month: "Nov", revenue: 1800 },
 ];
 
 const RevenueChart = ({darkMode}) => {

@@ -1,28 +1,20 @@
 import { useState } from "react";
 
-const ClientsList = ({ darkMode, initialClients }) => {
-  const [clients, setClients] = useState(initialClients);
-  const [addClientArea, setAddClientArea] = useState(false);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+const ClientsList = ({
+  darkMode,
+  handleAddClient,
+  handleDeleteClient,
+  clients,
+  setStatus,
+  setEmail,
+  setName,
+}) => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [addClientArea, setAddClientArea] = useState(false);
 
-  const filteredClients = initialClients.filter((client) =>
+  const filteredClients = clients.filter((client) =>
     client.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
-  const handleAddClient = () => {
-    if (!name || !email) return;
-    const newClient = {
-      id: Date.now(),
-      name: name,
-      email: email,
-      status: "Active",
-    };
-    setClients([...clients, newClient]);
-    setName("");
-    setEmail("");
-  };
 
   const handleOpenAddClient = () => {
     setAddClientArea((prev) => !prev);
@@ -86,13 +78,25 @@ const ClientsList = ({ darkMode, initialClients }) => {
               className="py-1 px-3 border border-stone-500 rounded-md w-[70vw]"
             />
             <div class="flex items-center gap-2.5">
-              <input type="radio" name="type" id="active" />
+              <input
+                type="radio"
+                name="type"
+                id="active"
+                value="Active"
+                onChange={(e) => setStatus(e.target.value)}
+              />
               <label for="inactive" class="md:text-lg">
                 Active
               </label>
             </div>
             <div class="flex items-center gap-2.5">
-              <input type="radio" name="type" id="inactive" />
+              <input
+                type="radio"
+                name="type"
+                id="inactive"
+                value="Inactive"
+                onChange={(e) => setStatus(e.target.value)}
+              />
               <label for="inactive" class="md:text-lg">
                 Inactive
               </label>
@@ -152,7 +156,10 @@ const ClientsList = ({ darkMode, initialClients }) => {
                 <button className="text-blue-600 hover:underline text-sm">
                   Edit
                 </button>
-                <button className="text-red-600 hover:underline text-sm">
+                <button
+                  onClick={() => handleDeleteClient(client.id)}
+                  className="text-red-600 hover:underline text-sm"
+                >
                   Delete
                 </button>
               </div>

@@ -13,7 +13,7 @@ const App = () => {
     localStorage.getItem("theme") === "dark"
   );
 
-  let name = "Gaius";
+  let userName = "Gaius";
   let userMail = "gaiusemmanuel12@gmail.com";
 
   useEffect(() => {
@@ -28,10 +28,43 @@ const App = () => {
     }
   }, [darkMode]);
 
+  // Tasks functionality
   const totalTasks = tasks.length;
   const activeTasks = tasks.filter((c) => c.status === "In Progress").length;
   const completedTasks = tasks.filter((c) => c.status === "Completed").length;
   const overdueTasks = tasks.filter((c) => c.status === "Overdue").length;
+
+  // Clients functionalities
+  const [clients, setClients] = useState(() => {
+    const saved = localStorage.getItem("clients");
+    return saved ? JSON.parse(saved) : initialClients;
+  });
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState("");
+
+  const handleAddClient = () => {
+    if (!name || !email) return;
+    const newClient = {
+      id: Date.now(),
+      name: name,
+      email: email,
+      status: status,
+    };
+    const updatedClients = [...clients, newClient];
+    localStorage.setItem("clients", JSON.stringify(updatedClients));
+    setClients(updatedClients);
+    setName("");
+    setEmail("");
+  };
+
+  const handleDeleteClient = (id) => {
+    const updatedClients = clients.filter((client) => client.id !== id);
+
+    setClients(updatedClients);
+
+    localStorage.setItem("clients", JSON.stringify(updatedClients));
+  };
 
   return (
     <>
@@ -40,11 +73,11 @@ const App = () => {
           path="/"
           element={
             <Dashboard
-              name={name}
+              userName={userName}
               darkMode={darkMode}
               userMail={userMail}
               setDarkMode={setDarkMode}
-              initialClients={initialClients}
+              clients={clients}
               tasks={tasks}
               activeTasks={activeTasks}
             />
@@ -58,6 +91,12 @@ const App = () => {
               userMail={userMail}
               setDarkMode={setDarkMode}
               initialClients={initialClients}
+              handleAddClient={handleAddClient}
+              handleDeleteClient={handleDeleteClient}
+              clients={clients}
+              setStatus={setStatus}
+              setEmail={setEmail}
+              setName={setName}
             />
           }
         />
@@ -73,6 +112,7 @@ const App = () => {
               activeTasks={activeTasks}
               completedTasks={completedTasks}
               overdueTasks={overdueTasks}
+              clients={clients}
             />
           }
         />

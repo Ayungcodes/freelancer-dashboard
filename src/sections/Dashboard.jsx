@@ -4,10 +4,10 @@ import RecentTasks from "../components/RecentTasks";
 import RevenueChart from "../components/RevenueChart";
 import Navbar from "./Navbar";
 
-const Dashboard = ({ name, darkMode, userMail, setDarkMode, initialClients, activeTasks, tasks }) => {
-  const totalCLients = initialClients.length;
-  const activeClients = initialClients.filter(c => c.status === "Active").length;
-  const inactiveClients = initialClients.filter(c => c.status === "Inactive").length;
+const Dashboard = ({ userName, darkMode, userMail, setDarkMode, clients, activeTasks, tasks }) => {
+  const totalCLients = clients.length;
+  const activeClients = clients.filter(c => c.status === "Active").length;
+  const inactiveClients = clients.filter(c => c.status === "Inactive").length;
   return (
     <section className="w-screen h-screen mx-auto">
       <Navbar darkMode={darkMode} userMail={userMail} setDarkMode={setDarkMode} />
@@ -17,7 +17,7 @@ const Dashboard = ({ name, darkMode, userMail, setDarkMode, initialClients, acti
         <div className="w-full h-full flex flex-col space-y-5">
           {/* welcome message */}
           <div>
-            <h1 className="text-xl md:text-3xl font-semibold">Welcome back, {name}👋🏾</h1>
+            <h1 className="text-xl md:text-3xl font-semibold">Welcome back, {userName}👋🏾</h1>
           </div>
           {/* cards */}
           <div className="grid grid-cols-3 gap-3 mt-14 lg:mt-6">
