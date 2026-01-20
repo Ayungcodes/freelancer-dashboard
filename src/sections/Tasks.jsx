@@ -14,7 +14,7 @@ const Tasks = ({
   clients,
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [addTasksArea, setAddTasksArea] = useState("false");
+  const [addTasksArea, setAddTasksArea] = useState(false);
 
   const filteredTasks = tasks.filter((task) =>
     task.title.toLowerCase().includes(searchTerm.toLowerCase())

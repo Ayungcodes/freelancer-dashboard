@@ -12,7 +12,7 @@ const Navbar = ({ darkMode, setDarkMode, userMail }) => {
   };
 
   return (
-    <nav className="w-screen py-5 px-2 md:px-8 mx-auto">
+    <nav className="w-screen py-5 px-3 md:px-8 mx-auto">
       <div className="flex flex-col gap-6 w-full">
         {/* top bar */}
         <div className="flex justify-between items-center">
