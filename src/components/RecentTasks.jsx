@@ -14,8 +14,10 @@ const priorityEmoji = {
   Low: "🟢",
 };
 
-const RecentTasks = ({ onTaskClick, darkMode, tasks }) => {
-  const sortedTasks = tasks.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 3);
+const RecentTasks = ({ darkMode, tasks }) => {
+  // sorting tasks by updatedAt date in descending order and taking the top 3
+  const sortedTasks = tasks.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)).slice(0, 3);
+
   return (
     <div
       className={`p-4 ${
@@ -26,7 +28,6 @@ const RecentTasks = ({ onTaskClick, darkMode, tasks }) => {
       {sortedTasks.map((task) => (
         <div
           key={task.id}
-          onClick={() => onTaskClick && onTaskClick(task)}
           className={`flex items-start justify-between p-3 mb-2 border border-stone-700 rounded-xl ${
             darkMode ? "hover:bg-stone-800" : "hover:hover:bg-gray-50"
           } cursor-pointer transition`}

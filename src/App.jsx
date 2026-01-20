@@ -6,11 +6,11 @@ import Tasks from "./sections/Tasks";
 import Analytics from "./sections/Analytics";
 import Settings from "./sections/Settings";
 import { initialClients } from ".";
-import { tasks } from ".";
+import { initialTasks } from ".";
 
 const App = () => {
   const [darkMode, setDarkMode] = useState(
-    localStorage.getItem("theme") === "dark"
+    localStorage.getItem("theme") === "dark",
   );
 
   let userName = "Gaius";
@@ -28,11 +28,48 @@ const App = () => {
     }
   }, [darkMode]);
 
+  // generate unique ID
+  const generateId = () => Date.now();
+
   // Tasks functionality
-  const totalTasks = tasks.length;
-  const activeTasks = tasks.filter((c) => c.status === "In Progress").length;
-  const completedTasks = tasks.filter((c) => c.status === "Completed").length;
-  const overdueTasks = tasks.filter((c) => c.status === "Overdue").length;
+  const [tasks, setTasks] = useState(() => {
+    const savedTasks = localStorage.getItem("tasks");
+    return savedTasks ? JSON.parse(savedTasks) : initialTasks;
+  });
+  const [title, setTitle] = useState("");
+  const [desc, setDesc] = useState("");
+  const [taskStatus, setTaskStatus] = useState("");
+  const [deadline, setDeadline] = useState("");
+  const [assignedClient, setAssignedClient] = useState("");
+
+  const handleSubmit = () => {
+    if (!title || !desc || !deadline || !assignedClient) {
+      return;
+    }
+
+    const newTask = {
+      id: generateId(),
+      title: title,
+      desc: desc,
+      status: taskStatus,
+      deadline: deadline,
+      client: assignedClient,
+    };
+    console.log(newTask);
+    const updatedTasks = [...tasks, newTask];
+    setTasks(updatedTasks);
+    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+    setTitle("");
+    setDesc("");
+    setDeadline("");
+    setAssignedClient("");
+  };
+
+  const handleDeleteTask = (id) => {
+    const updatedTasks = tasks.filter((task) => task.id !== id);
+    setTasks(updatedTasks);
+    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+  };
 
   // Clients functionalities
   const [clients, setClients] = useState(() => {
@@ -46,7 +83,7 @@ const App = () => {
   const handleAddClient = () => {
     if (!name || !email) return;
     const newClient = {
-      id: Date.now(),
+      id: generateId(),
       name: name,
       email: email,
       status: status,
@@ -79,7 +116,6 @@ const App = () => {
               setDarkMode={setDarkMode}
               clients={clients}
               tasks={tasks}
-              activeTasks={activeTasks}
             />
           }
         />
@@ -90,7 +126,6 @@ const App = () => {
               darkMode={darkMode}
               userMail={userMail}
               setDarkMode={setDarkMode}
-              initialClients={initialClients}
               handleAddClient={handleAddClient}
               handleDeleteClient={handleDeleteClient}
               clients={clients}
@@ -108,11 +143,19 @@ const App = () => {
               userMail={userMail}
               setDarkMode={setDarkMode}
               tasks={tasks}
-              totalTasks={totalTasks}
-              activeTasks={activeTasks}
-              completedTasks={completedTasks}
-              overdueTasks={overdueTasks}
               clients={clients}
+              title={title}
+              desc={desc}
+              taskStatus={taskStatus}
+              setTaskStatus={setTaskStatus}
+              deadline={deadline}
+              assignedClient={assignedClient}
+              setTitle={setTitle}
+              setDesc={setDesc}
+              setDeadline={setDeadline}
+              setAssignedClient={setAssignedClient}
+              handleSubmit={handleSubmit}
+              handleDeleteTask={handleDeleteTask}
             />
           }
         />

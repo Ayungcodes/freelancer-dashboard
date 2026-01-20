@@ -7,55 +7,41 @@ const Tasks = ({
   userMail,
   setDarkMode,
   tasks,
-  totalTasks,
-  activeTasks,
-  completedTasks,
-  overdueTasks,
   clients,
+  setTitle,
+  setDesc,
+  setTaskStatus,
+  setDeadline,
+  setAssignedClient,
+  title,
+  desc,
+  deadline,
+  assignedClient,
+  handleSubmit,
+  handleDeleteTask,
 }) => {
+  // task stats
+  const totalTasks = tasks.length;
+  const activeTasks = tasks.filter(
+    (c) => c.status === "Active",
+  ).length;
+  const completedTasks = tasks.filter(
+    (c) => c.status === "Inactive",
+  ).length;
+  const overdueTasks = tasks.filter(
+    (c) => c.status === "Overdue",
+  ).length;
+
+  // search and add tasks area state
   const [searchTerm, setSearchTerm] = useState("");
   const [addTasksArea, setAddTasksArea] = useState(false);
 
   const filteredTasks = tasks.filter((task) =>
-    task.title.toLowerCase().includes(searchTerm.toLowerCase())
+    task.title.toLowerCase().includes(searchTerm.toLowerCase()),
   );
+
   const handleOpenTasks = () => {
     setAddTasksArea((prev) => !prev);
-  };
-  const [nowTasks, setNowTasks] = useState(() => {
-    const savedTasks = localStorage.getItem("tasks");
-    return savedTasks ? JSON.parse(savedTasks) : [];
-  })
-  const [title, setTitle] = useState("");
-  const [desc, setDesc] = useState("");
-  const [status, setStatus] = useState("");
-  const [deadline, setDeadline] = useState("");
-  const [assignedClient, setAssignedClient] = useState("");
-
-  const handleSubmit = () => {
-    if (!title || !desc || !deadline || !assignedClient) {
-      // alert("Fill all fields");
-      return;
-    }
-
-    const newTask = {
-      id: Date.now(),
-      title,
-      desc,
-      status,
-      deadline,
-      client: assignedClient,
-    };
-
-    console.log("Task added:", newTask);
-
-    const updatedTasks = [...nowTasks, newTask];
-    setNowTasks(updatedTasks)
-    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
-    setTitle("");
-    setDesc("");
-    setDeadline("");
-    setAssignedClient("");
   };
 
   return (
@@ -79,6 +65,7 @@ const Tasks = ({
         />
         <Card title="Overdue Tasks" value={overdueTasks} darkMode={darkMode} />
       </div>
+
       {/* search and add tasks */}
       <div className="flex justify-between gap-3 mt-8 w-full">
         <div className="lg:w-[83%] md:w-[70vw] w-[62vw] flex items-center gap-2 border border-stone-500 rounded-lg px-3 py-1">
@@ -104,6 +91,8 @@ const Tasks = ({
         >
           + Add Task
         </button>
+
+        {/* Add Tasks pop up Area */}
         <div
           className={`fixed w-screen bottom-0 left-0 ${
             darkMode ? "bg-stone-800/95" : "bg-white/95"
@@ -145,10 +134,16 @@ const Tasks = ({
               onChange={(e) => setAssignedClient(e.target.value)}
               className="py-2 px-3 border border-stone-500 rounded-md w-[70vw] bg-transparent"
             >
-              <option value="" className="text-stone-600 bg-stone-300">Select Client</option>
+              <option value="" className="text-stone-600 bg-stone-300">
+                Select Client
+              </option>
 
               {clients.map((c) => (
-                <option key={c.id} value={c.name} className="text-stone-900 text-[14px] bg-stone-300">
+                <option
+                  key={c.id}
+                  value={c.name}
+                  className="text-stone-900 text-[14px] bg-stone-300"
+                >
                   {c.name}
                 </option>
               ))}
@@ -161,7 +156,7 @@ const Tasks = ({
                   type="radio"
                   name="status"
                   value="Active"
-                  onChange={(e) => setStatus(e.target.value)}
+                  onChange={(e) => setTaskStatus(e.target.value)}
                 />
                 Active
               </label>
@@ -171,7 +166,7 @@ const Tasks = ({
                   type="radio"
                   name="status"
                   value="Inactive"
-                  onChange={(e) => setStatus(e.target.value)}
+                  onChange={(e) => setTaskStatus(e.target.value)}
                 />
                 Inactive
               </label>
@@ -220,16 +215,25 @@ const Tasks = ({
                 <p className="font-medium">{task.title}</p>
                 <p className="text-sm text-gray-400/90">{task.client}</p>
               </div>
-              <div className="flex items-center gap-4 px-2">
+              <div className="flex items-center gap-4">
                 <span
                   className={`px-2 py-1 text-xs rounded-full ${
-                    task.status === "Completed"
+                    task.status === "Active"
                       ? "bg-green-100 text-green-800"
                       : "bg-gray-100 text-gray-500"
                   }`}
                 >
                   {task.status}
                 </span>
+                <button className="text-blue-600 hover:underline text-sm">
+                  Edit
+                </button>
+                <button
+                  onClick={() => handleDeleteTask(task.id)}
+                  className="text-red-600 hover:underline text-sm"
+                >
+                  Delete
+                </button>
               </div>
             </div>
           ))}

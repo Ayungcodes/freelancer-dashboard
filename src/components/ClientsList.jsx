@@ -9,6 +9,7 @@ const ClientsList = ({
   setEmail,
   setName,
 }) => {
+  // search and add client area state
   const [searchTerm, setSearchTerm] = useState("");
   const [addClientArea, setAddClientArea] = useState(false);
 

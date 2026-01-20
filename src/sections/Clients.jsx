@@ -5,7 +5,6 @@ const Clients = ({
   darkMode,
   userMail,
   setDarkMode,
-  initialClients,
   handleAddClient,
   handleDeleteClient,
   clients,
@@ -23,7 +22,6 @@ const Clients = ({
       <div className="px-2 mt-8 md:px-8 lg:px-20">
         <ClientsList
           darkMode={darkMode}
-          initialClients={initialClients}
           handleAddClient={handleAddClient}
           handleDeleteClient={handleDeleteClient}
           clients={clients}

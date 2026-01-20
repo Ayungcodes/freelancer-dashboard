@@ -38,7 +38,7 @@ const initialClients = [
   },
 ];
 
-const tasks = [
+const initialTasks = [
   {
     id: 1,
     title: "Landing page",
@@ -89,4 +89,4 @@ const tasks = [
   },
 ];
 
-export { initialClients, tasks };
+export { initialClients, initialTasks };
