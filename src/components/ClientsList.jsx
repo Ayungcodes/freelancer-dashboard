@@ -4,22 +4,26 @@ const ClientsList = ({
   darkMode,
   handleAddClient,
   handleDeleteClient,
+  handleUpdateClient,
   clients,
+  status,
+  name,
+  email,
   setStatus,
   setEmail,
   setName,
+  handleOpenAddClient,
+  addClientArea,
+  handleClientEditArea,
+  editClientArea,
+  setEditClientArea,
 }) => {
   // search and add client area state
   const [searchTerm, setSearchTerm] = useState("");
-  const [addClientArea, setAddClientArea] = useState(false);
 
   const filteredClients = clients.filter((client) =>
-    client.name.toLowerCase().includes(searchTerm.toLowerCase())
+    client.name.toLowerCase().includes(searchTerm.toLowerCase()),
   );
-
-  const handleOpenAddClient = () => {
-    setAddClientArea((prev) => !prev);
-  };
 
   return (
     <div>
@@ -46,72 +50,105 @@ const ClientsList = ({
         >
           + Add Client
         </button>
-        {/* add client pop up */}
+        {/* Overlay */}
         <div
-          className={`fixed w-screen bottom-0 left-0 ${
-            darkMode ? "bg-stone-800/95" : "bg-white/95"
-          } backdrop-blur-sm z-50 overflow-hidden transition-all duration-500 ease-in-out ${
-            addClientArea
-              ? "h-[62vh] opacity-100 pointer-events-auto"
-              : "h-0 opacity-0 pointer-events-none"
+          onClick={handleOpenAddClient}
+          className={`fixed inset-0 z-40 bg-black/40 transition-opacity duration-300 ${
+            addClientArea ? "opacity-100" : "opacity-0 pointer-events-none"
           }`}
+        />
+
+        {/* Add Client Drawer */}
+        <div
+          className={`fixed bottom-0 left-0 right-0 z-50 transform transition-transform duration-300 ease-in-out
+  ${addClientArea ? "translate-y-0" : "translate-y-full"}
+  ${darkMode ? "bg-stone-900 text-white" : "bg-white text-stone-900"}
+  rounded-t-2xl shadow-2xl`}
         >
-          <div className="px-2 mt-4 space-y-4 flex flex-col">
-            <h1 className="text-lg">Enter Client:</h1>
-            <input
-              onChange={(e) => {
-                setName(e.target.value);
-              }}
-              type="text"
-              name="name"
-              id="name"
-              placeholder="Full Name"
-              className="py-1 px-3 border border-stone-500 rounded-md w-[70vw]"
-            />
-            <input
-              onChange={(e) => {
-                setEmail(e.target.value);
-              }}
-              type="email"
-              name="email"
-              id="email"
-              placeholder="Email"
-              className="py-1 px-3 border border-stone-500 rounded-md w-[70vw]"
-            />
-            <div class="flex items-center gap-2.5">
-              <input
-                type="radio"
-                name="type"
-                id="active"
-                value="Active"
-                onChange={(e) => setStatus(e.target.value)}
-              />
-              <label for="inactive" class="md:text-lg">
-                Active
+          {/* Header */}
+          <div className="flex items-center justify-between px-5 py-4 border-b border-stone-700">
+            <h2 className="text-lg font-semibold">Add New Client</h2>
+            <button
+              onClick={handleOpenAddClient}
+              className="text-stone-400 hover:text-stone-200 text-xl"
+            >
+              ×
+            </button>
+          </div>
+
+          {/* Body */}
+          <div className="px-5 py-6 flex flex-col gap-4">
+            {/* Name */}
+            <div>
+              <label htmlFor="name" className="text-sm text-stone-400">
+                Full Name
               </label>
-            </div>
-            <div class="flex items-center gap-2.5">
               <input
-                type="radio"
-                name="type"
-                id="inactive"
-                value="Inactive"
-                onChange={(e) => setStatus(e.target.value)}
+                id="name"
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="John Doe"
+                className="mt-1 w-full px-3 py-2 rounded-md bg-transparent border border-stone-600 focus:ring focus:ring-stone-400 outline-none"
               />
-              <label for="inactive" class="md:text-lg">
-                Inactive
-              </label>
             </div>
+
+            {/* Email */}
+            <div>
+              <label htmlFor="email" className="text-sm text-stone-400">
+                Email Address
+              </label>
+              <input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="john@email.com"
+                className="mt-1 w-full px-3 py-2 rounded-md bg-transparent border border-stone-600 focus:ring focus:ring-stone-400 outline-none"
+              />
+            </div>
+
+            {/* Status */}
+            <div>
+              <p className="text-sm text-stone-400 mb-2">Status</p>
+              <div className="flex gap-6">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="status"
+                    value="Active"
+                    checked={status === "Active"}
+                    onChange={(e) => setStatus(e.target.value)}
+                  />
+                  Active
+                </label>
+
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="status"
+                    value="Inactive"
+                    checked={status === "Inactive"}
+                    onChange={(e) => setStatus(e.target.value)}
+                  />
+                  Inactive
+                </label>
+              </div>
+            </div>
+          </div>
+
+          {/* Footer */}
+          <div className="px-5 py-4 border-t border-stone-700 flex justify-end">
             <button
               onClick={() => {
                 handleAddClient();
                 handleOpenAddClient();
               }}
-              className={`py-1 rounded-md w-[30vw] ${
-                darkMode ? "bg-white text-black" : "bg-[#333333] text-white"
+              className={`px-5 py-2 rounded-md text-sm font-medium ${
+                darkMode ? "bg-white text-black" : "bg-black text-white"
               }`}
             >
-              Add
+              Add Client
             </button>
           </div>
         </div>
@@ -154,7 +191,10 @@ const ClientsList = ({
                 >
                   {client.status}
                 </span>
-                <button className="text-blue-600 hover:underline text-sm">
+                <button
+                  onClick={() => handleClientEditArea(client)}
+                  className="text-blue-600 hover:underline text-sm"
+                >
                   Edit
                 </button>
                 <button
@@ -166,6 +206,102 @@ const ClientsList = ({
               </div>
             </div>
           ))}
+          {/* Overlay */}
+          <div
+            onClick={() => setEditClientArea(false)}
+            className={`fixed inset-0 z-9999 bg-black/60 transition-opacity duration-300 ${
+              editClientArea ? "opacity-100" : "opacity-0 pointer-events-none"
+            }`}
+          />
+
+          {/* Client Edit Drawer */}
+          <div
+            className={`fixed top-0 right-0 h-screen w-[420px] z-9999999 transform transition-transform duration-300 ease-in-out
+  ${editClientArea ? "translate-x-0" : "translate-x-full"}
+  ${darkMode ? "bg-stone-900 text-white" : "bg-white text-stone-900"}
+  shadow-2xl`}
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between px-5 py-4 border-b border-stone-700">
+              <h2 className="text-lg font-semibold">Edit Client</h2>
+              <button
+                onClick={() => setEditClientArea(false)}
+                className="text-stone-400 hover:text-stone-200 text-xl"
+              >
+                ×
+              </button>
+            </div>
+
+            {/* Body */}
+            <div className="flex flex-col gap-4 px-5 py-6">
+              {/* Name */}
+              <div>
+                <label className="text-sm text-stone-400">Client Name</label>
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="mt-1 w-full px-3 py-2 rounded-md bg-transparent border border-stone-600 focus:ring focus:ring-stone-400 outline-none"
+                />
+              </div>
+
+              {/* Email */}
+              <div>
+                <label className="text-sm text-stone-400">Email</label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="mt-1 w-full px-3 py-2 rounded-md bg-transparent border border-stone-600 focus:ring focus:ring-stone-400 outline-none"
+                />
+              </div>
+
+              {/* Status */}
+              <div>
+                <label className="text-sm text-stone-400">Status</label>
+                <div className="flex gap-4 mt-2">
+                  <label className="flex items-center gap-2">
+                    <input
+                      type="radio"
+                      value="Active"
+                      checked={status === "Active"}
+                      onChange={(e) => setStatus(e.target.value)}
+                    />
+                    Active
+                  </label>
+
+                  <label className="flex items-center gap-2">
+                    <input
+                      type="radio"
+                      value="Inactive"
+                      checked={status === "Inactive"}
+                      onChange={(e) => setStatus(e.target.value)}
+                    />
+                    Inactive
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="absolute bottom-0 w-full px-5 py-4 border-t border-stone-700 flex justify-between">
+              <button
+                onClick={handleDeleteClient}
+                className="text-red-500 hover:text-red-600 text-sm font-medium"
+              >
+                Delete Client
+              </button>
+
+              <button
+                onClick={() => handleUpdateClient()}
+                className={`px-4 py-2 rounded-md text-sm font-medium cursor-pointer ${
+                  darkMode ? "bg-white text-black" : "bg-black text-white"
+                }`}
+              >
+                Save Changes
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

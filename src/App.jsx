@@ -41,6 +41,8 @@ const App = () => {
   const [taskStatus, setTaskStatus] = useState("");
   const [deadline, setDeadline] = useState("");
   const [assignedClient, setAssignedClient] = useState("");
+  const [selectedClientId, setSelectedClientId] = useState(null);
+  const [editClientArea, setEditClientArea] = useState(false);
 
   const handleSubmit = () => {
     if (!title || !desc || !deadline || !assignedClient) {
@@ -80,6 +82,8 @@ const App = () => {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState("");
 
+  const [addClientArea, setAddClientArea] = useState(false);
+
   const handleAddClient = () => {
     if (!name || !email) return;
     const newClient = {
@@ -101,6 +105,42 @@ const App = () => {
     setClients(updatedClients);
 
     localStorage.setItem("clients", JSON.stringify(updatedClients));
+  };
+
+  const handleOpenAddClient = () => {
+    setAddClientArea((prev) => !prev);
+  };
+
+  const handleClientEditArea = (client) => {
+    setEditClientArea(true);
+    setSelectedClientId(client.id);
+    setName(client.name);
+    setEmail(client.email);
+    setStatus(client.status);
+  };
+
+  const handleUpdateClient = () => {
+    if (!selectedClientId || !name || !email) {
+      console.log("FAILED VALIDATION");
+      return;
+    }
+
+    const updatedClients = clients.map((client) =>
+      client.id === selectedClientId
+        ? { ...client, name, email, status }
+        : client,
+    );
+
+    console.log("UPDATED CLIENTS", updatedClients);
+
+    setClients(updatedClients);
+    localStorage.setItem("clients", JSON.stringify(updatedClients));
+
+    // cleanup
+    setEditClientArea(false);
+    setSelectedClientId(null);
+    setName("");
+    setEmail("");
   };
 
   return (
@@ -128,10 +168,19 @@ const App = () => {
               setDarkMode={setDarkMode}
               handleAddClient={handleAddClient}
               handleDeleteClient={handleDeleteClient}
+              handleUpdateClient={handleUpdateClient}
               clients={clients}
+              status={status}
               setStatus={setStatus}
               setEmail={setEmail}
               setName={setName}
+              handleOpenAddClient={handleOpenAddClient}
+              addClientArea={addClientArea}
+              handleClientEditArea={handleClientEditArea}
+              editClientArea={editClientArea}
+              setEditClientArea={setEditClientArea}
+              name={name}
+              email={email}
             />
           }
         />

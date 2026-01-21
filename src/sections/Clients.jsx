@@ -7,10 +7,19 @@ const Clients = ({
   setDarkMode,
   handleAddClient,
   handleDeleteClient,
+  handleUpdateClient,
   clients,
+  status,
+  name,
+  email,
   setStatus,
   setEmail,
-  setName
+  setName,
+  handleOpenAddClient,
+  addClientArea,
+  handleClientEditArea,
+  editClientArea,
+  setEditClientArea,
 }) => {
   return (
     <section>
@@ -24,10 +33,19 @@ const Clients = ({
           darkMode={darkMode}
           handleAddClient={handleAddClient}
           handleDeleteClient={handleDeleteClient}
+          handleUpdateClient={handleUpdateClient}
           clients={clients}
+          status={status}
+          name={name}
+          email={email}
           setStatus={setStatus}
           setEmail={setEmail}
           setName={setName}
+          handleOpenAddClient={handleOpenAddClient}
+          addClientArea={addClientArea}
+          handleClientEditArea={handleClientEditArea}
+          editClientArea={editClientArea}
+          setEditClientArea={setEditClientArea}
         />
       </div>
     </section>
