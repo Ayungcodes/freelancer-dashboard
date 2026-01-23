@@ -31,19 +31,32 @@ const App = () => {
   // generate unique ID
   const generateId = () => Date.now();
 
-  // Tasks functionality
-  const [tasks, setTasks] = useState(() => {
-    const savedTasks = localStorage.getItem("tasks");
-    return savedTasks ? JSON.parse(savedTasks) : initialTasks;
-  });
+  // tasks related states
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
   const [taskStatus, setTaskStatus] = useState("");
   const [deadline, setDeadline] = useState("");
+  const [editTaskArea, setEditTaskArea] = useState(false);
+  const [selectedTaskId, setSelectedTaskId] = useState(null);
   const [assignedClient, setAssignedClient] = useState("");
+  const [tasks, setTasks] = useState(() => {
+    const savedTasks = localStorage.getItem("tasks");
+    return savedTasks ? JSON.parse(savedTasks) : initialTasks;
+  });
+
+  // clients related states
   const [selectedClientId, setSelectedClientId] = useState(null);
   const [editClientArea, setEditClientArea] = useState(false);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState("");
+  const [addClientArea, setAddClientArea] = useState(false);
+  const [clients, setClients] = useState(() => {
+    const saved = localStorage.getItem("clients");
+    return saved ? JSON.parse(saved) : initialClients;
+  });
 
+  // tasks functionalies
   const handleSubmit = () => {
     if (!title || !desc || !deadline || !assignedClient) {
       return;
@@ -67,6 +80,42 @@ const App = () => {
     setAssignedClient("");
   };
 
+  const handleTaskEditArea = (task) => {
+    setEditTaskArea(true);
+    setSelectedTaskId(task.id);
+    setTitle(task.title);
+    setDesc(task.desc);
+    setTaskStatus(task.status);
+  };
+
+  // delete task at edit drawer
+  const handlerDeleteTaskAtEdit = () => {
+    const updatedTasks = tasks.filter((task) => task.id !== selectedTaskId);
+    setTasks(updatedTasks);
+    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+
+    setEditTaskArea(false);
+  };
+
+  const handleUpdateTask = () => {
+    if (!selectedTaskId || !title || !desc || !taskStatus) {
+      console.log("FAILED VALIDATION");
+    }
+    const updatedTasks = tasks.map((task) =>
+      task.id === selectedTaskId ? { ...task, title, desc, taskStatus } : task,
+    );
+
+    // console.log("UPDATED TASKS", updatedTasks);
+
+    setTasks(updatedTasks);
+    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+
+    // cleanup
+    setEditTaskArea(false);
+    setSelectedTaskId(null);
+    setTitle("");
+  };
+
   const handleDeleteTask = (id) => {
     const updatedTasks = tasks.filter((task) => task.id !== id);
     setTasks(updatedTasks);
@@ -74,16 +123,6 @@ const App = () => {
   };
 
   // Clients functionalities
-  const [clients, setClients] = useState(() => {
-    const saved = localStorage.getItem("clients");
-    return saved ? JSON.parse(saved) : initialClients;
-  });
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [status, setStatus] = useState("");
-
-  const [addClientArea, setAddClientArea] = useState(false);
-
   const handleAddClient = () => {
     if (!name || !email) return;
     const newClient = {
@@ -119,6 +158,19 @@ const App = () => {
     setStatus(client.status);
   };
 
+  // delete client at client drawer
+  const handleDeleteClientAtEdit = () => {
+    const updatedClients = clients.filter(
+      (client) => client.id !== selectedClientId,
+    );
+
+    setClients(updatedClients);
+
+    localStorage.setItem("clients", JSON.stringify(updatedClients));
+
+    setEditClientArea(false);
+  };
+
   const handleUpdateClient = () => {
     if (!selectedClientId || !name || !email) {
       console.log("FAILED VALIDATION");
@@ -131,7 +183,7 @@ const App = () => {
         : client,
     );
 
-    console.log("UPDATED CLIENTS", updatedClients);
+    // console.log("UPDATED CLIENTS", updatedClients);
 
     setClients(updatedClients);
     localStorage.setItem("clients", JSON.stringify(updatedClients));
@@ -181,6 +233,7 @@ const App = () => {
               setEditClientArea={setEditClientArea}
               name={name}
               email={email}
+              handleDeleteClientAtEdit={handleDeleteClientAtEdit}
             />
           }
         />
@@ -205,6 +258,11 @@ const App = () => {
               setAssignedClient={setAssignedClient}
               handleSubmit={handleSubmit}
               handleDeleteTask={handleDeleteTask}
+              editTaskArea={editTaskArea}
+              setEditTaskArea={setEditTaskArea}
+              handleTaskEditArea={handleTaskEditArea}
+              handleUpdateTask={handleUpdateTask}
+              handlerDeleteTaskAtEdit={handlerDeleteTaskAtEdit}
             />
           }
         />

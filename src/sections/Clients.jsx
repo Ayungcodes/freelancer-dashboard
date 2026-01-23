@@ -20,6 +20,7 @@ const Clients = ({
   handleClientEditArea,
   editClientArea,
   setEditClientArea,
+  handleDeleteClientAtEdit,
 }) => {
   return (
     <section>
@@ -46,6 +47,7 @@ const Clients = ({
           handleClientEditArea={handleClientEditArea}
           editClientArea={editClientArea}
           setEditClientArea={setEditClientArea}
+          handleDeleteClientAtEdit={handleDeleteClientAtEdit}
         />
       </div>
     </section>
